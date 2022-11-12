@@ -50,11 +50,12 @@ echo "Step 1: Kernel version is currently set to ${KERNEL_VERSION}"
 #Step 2: Install and update dependencies
 sudo apt update
 sudo apt install -y python3-pip python3-gpiozero python3-evdev git
+sudo python3 -m pip install pyyaml
 echo "Step 2: Dependencies successfully installed"
 
 
 #Step 3: Clone code from github
-cd /home/pi
+cd /usr/local/etc
 [ ! -d ${REPO_NAME} ] && git clone https://github.com/milador/BlueStick
 cd ${REPO_NAME}/resource
 echo "Step 3: Repository was cloned"
