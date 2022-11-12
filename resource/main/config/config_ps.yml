@@ -1,0 +1,69 @@
+# BUTTON MAPPING OPTIONS
+PS_BUTTON:
+  SQUARE:           0
+  CROSS:            1
+  CIRCLE:           2
+  TRIANGLE:         3
+  L1:               4
+  R1:               5
+  L2:               6
+  R2:               7
+  SHARE:            8
+  OPTIONS:          9
+  L3:               10
+  R3:               11
+  LOGO:             12
+  TPAD:             13
+  
+#EDIT DEBUG CONFIGURATION 
+
+MAP_DEBUG:          False
+
+#EDIT JOYSTICK CONFIGURATION 
+
+MAP_XY:
+  INPUT_MIN:        -16
+  INPUT_MAX:         16
+  INPUT_DEADZONE:    1
+  OUTPUT_MIN:       -127
+  OUTPUT_MAX:        127
+  OPERATION_MODE:    0  
+  REACTION_TIME:     10 
+
+#EDIT BUTTON MAPPING 
+  
+MAP_MOUSE:
+  BTN_LEFT:          SQUARE
+  BTN_RIGHT:         CROSS
+  BTN_MIDDLE:        CIRCLE
+  BTN_SIDE:          TRIANGLE
+  BTN_EXTRA:         OPTIONS
+  
+MAP_KEYBOARD:
+  KEY_A:             TRIANGLE
+  KEY_B:             CIRCLE
+  KEY_X:             CROSS
+  KEY_Y:             SQUARE
+  KEY_1:             L1
+  KEY_2:             L2
+  KEY_3:             L3
+  KEY_4:             SHARE
+  KEY_5:             OPTIONS
+  KEY_6:             R3
+  KEY_7:             R2
+  KEY_8:             R3
+  KEY_UP: 
+   X: 0
+   Y: -127
+  KEY_RIGHT: 
+   X: 127
+   Y: 0
+  KEY_DOWN: 
+   X: 0
+   Y: 127
+  KEY_LEFT: 
+   X: -127
+   Y: 0
+  
+MAP_OTHERS:
+  REL_WHEEL:          OPTIONS

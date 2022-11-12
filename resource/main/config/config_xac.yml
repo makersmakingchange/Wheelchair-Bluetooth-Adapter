@@ -1,0 +1,77 @@
+# BUTTON MAPPING OPTIONS
+XAC_LEFT_BUTTON:
+  X1:                0
+  X2:                1
+  LEFT_THUMB:        2
+  LEFT_BUMPER:       3
+  A:                 4
+  B:                 5
+  VIEW:              6
+  MENU:              7
+  
+XAC_RIGHT_BUTTON: 
+  VIEW:              0
+  MENU:              1
+  RIGHT_THUMB:       2
+  RIGHT_BUMPER:      3
+  X:                 4
+  Y:                 5
+  X1:                6
+  X2:                7
+
+#EDIT DEBUG CONFIGURATION 
+
+MAP_DEBUG:           False
+
+#EDIT USB CONFIGURATION 
+
+MAP_USB:             XAC_LEFT_BUTTON
+
+#EDIT JOYSTICK CONFIGURATION 
+
+MAP_XY:
+  INPUT_MIN:        -16
+  INPUT_MAX:         16
+  INPUT_DEADZONE:    1
+  OUTPUT_MIN:       -127
+  OUTPUT_MAX:        127
+  OPERATION_MODE:    0  
+  REACTION_TIME:     10 
+  
+#EDIT BUTTON MAPPING 
+  
+MAP_MOUSE:
+  BTN_LEFT:           A
+  BTN_RIGHT:          B
+  BTN_MIDDLE:         LEFT_BUMPER
+  BTN_SIDE:           LEFT_THUMB
+  BTN_EXTRA:          VIEW
+  
+MAP_KEYBOARD:
+  KEY_A:              A
+  KEY_B:              B
+  KEY_X:              X1
+  KEY_Y:              X2
+  KEY_1:              X1
+  KEY_2:              X2
+  KEY_3:              LEFT_THUMB
+  KEY_4:              LEFT_BUMPER
+  KEY_5:              A
+  KEY_6:              B
+  KEY_7:              VIEW
+  KEY_8:              MENU
+  KEY_UP: 
+   X: 0
+   Y: -127
+  KEY_RIGHT: 
+   X: 127
+   Y: 0
+  KEY_DOWN: 
+   X: 0
+   Y: 127
+  KEY_LEFT: 
+   X: -127
+   Y: 0
+  
+MAP_OTHERS:
+  REL_WHEEL:          MENU

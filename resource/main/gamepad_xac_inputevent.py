@@ -6,11 +6,39 @@ import time
 import evdev        # sudo apt install python3-evdev
 from enum import IntEnum
 from module.gamepad_XAC import Gamepad_XAC
+import yaml
+
+with open("./config/config_xac.yml", "r") as configfile:
+    config = yaml.load(configfile, Loader=yaml.FullLoader)
 
 Gamepad = Gamepad_XAC()
+
 Gamepad.begin('/dev/hidg0')
 
-DEBUG_MODE = False
+class XAC_USB(IntEnum):
+    XAC_LEFT_BUTTON = 0
+    XAC_RIGHT_BUTTON = 1
+
+
+class XAC_LEFT_BUTTON(IntEnum):
+    X1 =             0
+    X2 =             1
+    LEFT_THUMB =     2
+    LEFT_BUMPER =    3
+    A =              4
+    B =              5
+    VIEW =           6
+    MENU =           7
+
+class XAC_RIGHT_BUTTON(IntEnum):
+    VIEW =           0
+    MENU =           1
+    RIGHT_THUMB =    2
+    RIGHT_BUMPER =   3
+    X =              4
+    Y =              5
+    X1 =             6
+    X2 =             7
 
 mice_x_in = 0
 mice_y_in = 0
@@ -20,69 +48,55 @@ gamepad_y_out = 0
 
 reaction_time = 0.0
 
+mapEnableDebug = config['MAP_DEBUG']
+mapUSB = config['MAP_USB']
+mapXY = config['MAP_XY']
+mapMouse = config['MAP_MOUSE']
+mapKeyboard = config['MAP_KEYBOARD']
+mapOthers = config['MAP_OTHERS']
 
-"""
-USB HID joysticks may optionally expose digital buttons through the HID
-interface. The Xbox Adaptivecontroller will map the first 8 buttons to
-X1/X2/ThumbBtnL/BumperL/A/B/View/Menufor Left USB port, and
-View/Menu/ThumbBtnR/BumperR/X/Y/X1/X2for Right USB port.  Any additional
-buttons will be ignored.If the mapped buttons are reconfigured using the Xbox
-Accessories App, the new configurations will be applied to USB HID joystick
-buttons,too.
-"""
+inputMinValue = mapXY['INPUT_MIN']
+inputMaxValue = mapXY['INPUT_MAX']
+deadZoneValue = mapXY['INPUT_DEADZONE']
+outputMinValue = mapXY['OUTPUT_MIN']
+outputMaxValue = mapXY['OUTPUT_MAX']
+operationMode = mapXY['OPERATION_MODE']
+reactionTimeValue = mapXY['REACTION_TIME']
 
-class LEFT_BUTTON(IntEnum):
-    X1 = 0
-    X2 = 1
-    ThumbBtnL = 2
-    BumperL = 3
-    A = 4
-    B = 5
-    View = 6
-    Menu = 7
+XAC_BUTTON = config['XAC_LEFT_BUTTON'] if mapUSB == 'XAC_LEFT_BUTTON' else config['XAC_RIGHT_BUTTON']
 
-class RIGHT_BUTTON(IntEnum):
-    View = 0
-    Menu = 1
-    ThumbBtnR = 2
-    BumperR = 3
-    X = 4
-    Y = 5
-    X1 = 6
-    X2 = 7
-    
-class GAMEPAD_XY(IntEnum):
-    MinInputValue = -16
-    MaxInputValue = 16
-    MinOutputValue = -127
-    MaxOutputValue = 127
-    DeadZoneValue = 1
-    OperationMode = 0  # 0: Don't Keep position after each mice move, 1: Keep position after each mice move
-    ReactionTimeValue =  10  #10 ms
 
 # Map keyboard keys or mouse buttons to gamepad buttons.
 EVENT2ACTION = {
     'BUTTONS': {
-        str(evdev.ecodes.BTN_LEFT): LEFT_BUTTON.A,
-        str(evdev.ecodes.BTN_RIGHT): LEFT_BUTTON.B,
-        str(evdev.ecodes.BTN_MIDDLE): LEFT_BUTTON.BumperL,
-        str(evdev.ecodes.BTN_SIDE): LEFT_BUTTON.ThumbBtnL,
-        str(evdev.ecodes.BTN_EXTRA): LEFT_BUTTON.View,
-        str(evdev.ecodes.KEY_A): LEFT_BUTTON.Menu,
-        str(evdev.ecodes.KEY_S): LEFT_BUTTON.X1,
-        str(evdev.ecodes.KEY_D): LEFT_BUTTON.X2
+        str(evdev.ecodes.BTN_LEFT):   XAC_BUTTON[mapMouse['BTN_LEFT']],
+        str(evdev.ecodes.BTN_RIGHT):  XAC_BUTTON[mapMouse['BTN_RIGHT']],
+        str(evdev.ecodes.BTN_MIDDLE): XAC_BUTTON[mapMouse['BTN_MIDDLE']],
+        str(evdev.ecodes.BTN_SIDE):   XAC_BUTTON[mapMouse['BTN_SIDE']],
+        str(evdev.ecodes.BTN_EXTRA):  XAC_BUTTON[mapMouse['BTN_EXTRA']],
+        str(evdev.ecodes.KEY_A):      XAC_BUTTON[mapKeyboard['KEY_A']],
+        str(evdev.ecodes.KEY_B):      XAC_BUTTON[mapKeyboard['KEY_B']],
+        str(evdev.ecodes.KEY_X):      XAC_BUTTON[mapKeyboard['KEY_X']],
+        str(evdev.ecodes.KEY_Y):      XAC_BUTTON[mapKeyboard['KEY_Y']],
+        str(evdev.ecodes.KEY_1):      XAC_BUTTON[mapKeyboard['KEY_1']],
+        str(evdev.ecodes.KEY_2):      XAC_BUTTON[mapKeyboard['KEY_2']],
+        str(evdev.ecodes.KEY_3):      XAC_BUTTON[mapKeyboard['KEY_3']],
+        str(evdev.ecodes.KEY_4):      XAC_BUTTON[mapKeyboard['KEY_4']],
+        str(evdev.ecodes.KEY_5):      XAC_BUTTON[mapKeyboard['KEY_5']],
+        str(evdev.ecodes.KEY_6):      XAC_BUTTON[mapKeyboard['KEY_6']],
+        str(evdev.ecodes.KEY_7):      XAC_BUTTON[mapKeyboard['KEY_7']],
+        str(evdev.ecodes.KEY_8):      XAC_BUTTON[mapKeyboard['KEY_8']]
     }, 
     'DIRECTIONS': {
-        str(evdev.ecodes.KEY_UP): {"x":   0, "y": -127},
-        str(evdev.ecodes.KEY_RIGHT): {"x":   127, "y": 0},
-        str(evdev.ecodes.KEY_DOWN): {"x":   0, "y": 127},
-        str(evdev.ecodes.KEY_LEFT): {"x":   -127, "y": 0}
+        str(evdev.ecodes.KEY_UP): {"x": mapKeyboard['KEY_UP']['X'], "y": mapKeyboard['KEY_UP']['Y']},
+        str(evdev.ecodes.KEY_RIGHT): {"x": mapKeyboard['KEY_RIGHT']['X'], "y": mapKeyboard['KEY_RIGHT']['Y']},
+        str(evdev.ecodes.KEY_DOWN): {"x": mapKeyboard['KEY_DOWN']['X'], "y": mapKeyboard['KEY_DOWN']['Y']},
+        str(evdev.ecodes.KEY_LEFT): {"x": mapKeyboard['KEY_LEFT']['X'], "y": mapKeyboard['KEY_LEFT']['Y']}
     },
     'OTHERS': {
-        str(evdev.ecodes.REL_WHEEL): LEFT_BUTTON.X1    
+        str(evdev.ecodes.REL_WHEEL): XAC_BUTTON[mapOthers['REL_WHEEL']]
     }
 }
-
 
 async def handle_events(device):
     global mice_x_in
@@ -97,51 +111,51 @@ async def handle_events(device):
             if str(event.code) in EVENT2ACTION.get('BUTTONS'):
                 gamepad_button = EVENT2ACTION.get('BUTTONS')[str(event.code)]
                 if event.value == 1:
-                    if DEBUG_MODE: 
+                    if mapEnableDebug: 
                         print('Key or button press', 'gamepad button press', gamepad_button)
                     Gamepad.press(gamepad_button)
                     time.sleep(0.05)
                 elif event.value == 0:
-                    if DEBUG_MODE: 
+                    if mapEnableDebug: 
                         print('Key or button release', 'gamepad button release', gamepad_button)
                     Gamepad.release(gamepad_button)
             elif str(event.code) in EVENT2ACTION.get('DIRECTIONS'):
                 gamepad_move = EVENT2ACTION.get('DIRECTIONS')[str(event.code)]
                 if event.value == 1:
-                    if DEBUG_MODE: 
+                    if mapEnableDebug: 
                         print('Direction Key press', 'gamepad axis move', gamepad_move)
                     Gamepad.xAxis(gamepad_move['x'])
                     Gamepad.yAxis(gamepad_move['y'])
                     time.sleep(0.05)
                 elif event.value == 0:
-                    if DEBUG_MODE: 
+                    if mapEnableDebug: 
                         print('Direction Key release', 'gamepad axis release', gamepad_move)
                     Gamepad.xAxis(0)
                     Gamepad.yAxis(0)
             else:
                 """ Map mouse motion to thumbstick motion """
-                if event.code == evdev.ecodes.REL_X and int(GAMEPAD_XY.OperationMode)== 0 and event.value != 0:
+                if event.code == evdev.ecodes.REL_X and int(operationMode)== 0 and event.value != 0:
                     mice_x_in = event.value
-                    gamepad_x_out = map_joystick(mice_x_in,int(GAMEPAD_XY.DeadZoneValue),int(GAMEPAD_XY.MinInputValue),int(GAMEPAD_XY.MaxInputValue),int(GAMEPAD_XY.MinOutputValue),int(GAMEPAD_XY.MaxOutputValue))
-                    if DEBUG_MODE: 
+                    gamepad_x_out = map_joystick(mice_x_in,int(deadZoneValue),int(inputMinValue),int(inputMaxValue),int(outputMinValue),int(outputMaxValue))
+                    if mapEnableDebug: 
                         print('REL_X', event.value , 'gamepad x axis out', gamepad_x_out)
                     Gamepad.xAxis(gamepad_x_out)
-                if event.code == evdev.ecodes.REL_X and int(GAMEPAD_XY.OperationMode) == 1:
+                if event.code == evdev.ecodes.REL_X and int(operationMode) == 1:
                     mice_x_in = event.value + mice_x_in
-                    gamepad_x_out = map_joystick(mice_x_in,int(GAMEPAD_XY.DeadZoneValue),int(GAMEPAD_XY.MinInputValue),int(GAMEPAD_XY.MaxInputValue),int(GAMEPAD_XY.MinOutputValue),int(GAMEPAD_XY.MaxOutputValue))
-                    if DEBUG_MODE: 
+                    gamepad_x_out = map_joystick(mice_x_in,int(deadZoneValue),int(inputMinValue),int(inputMaxValue),int(outputMinValue),int(outputMaxValue))
+                    if mapEnableDebug: 
                         print('REL_X', event.value , 'gamepad x axis out', gamepad_x_out)
                     Gamepad.xAxis(gamepad_x_out)
-                elif event.code == evdev.ecodes.REL_Y and int(GAMEPAD_XY.OperationMode)== 0 and event.value != 0:
+                elif event.code == evdev.ecodes.REL_Y and int(operationMode)== 0 and event.value != 0:
                     mice_y_in = event.value
-                    gamepad_y_out = map_joystick(mice_y_in,int(GAMEPAD_XY.DeadZoneValue),int(GAMEPAD_XY.MinInputValue),int(GAMEPAD_XY.MaxInputValue),int(GAMEPAD_XY.MinOutputValue),int(GAMEPAD_XY.MaxOutputValue))
-                    if DEBUG_MODE: 
+                    gamepad_y_out = map_joystick(mice_y_in,int(deadZoneValue),int(inputMinValue),int(inputMaxValue),int(outputMinValue),int(outputMaxValue))
+                    if mapEnableDebug: 
                         print('REL_Y', event.value , 'gamepad y axis out', gamepad_y_out)
                     Gamepad.yAxis(gamepad_y_out)
-                elif event.code == evdev.ecodes.REL_Y and int(GAMEPAD_XY.OperationMode)== 1:
+                elif event.code == evdev.ecodes.REL_Y and int(operationMode)== 1:
                     mice_y_in = event.value + mice_y_in
-                    gamepad_y_out = map_joystick(mice_y_in,int(GAMEPAD_XY.DeadZoneValue),int(GAMEPAD_XY.MinInputValue),int(GAMEPAD_XY.MaxInputValue),int(GAMEPAD_XY.MinOutputValue),int(GAMEPAD_XY.MaxOutputValue))
-                    if DEBUG_MODE: 
+                    gamepad_y_out = map_joystick(mice_y_in,int(deadZoneValue),int(inputMinValue),int(inputMaxValue),int(outputMinValue),int(outputMaxValue))
+                    if mapEnableDebug: 
                         print('REL_Y', event.value , 'gamepad y axis out', gamepad_y_out)
                     Gamepad.yAxis(gamepad_y_out)
                 elif event.code == evdev.ecodes.REL_WHEEL:
@@ -150,16 +164,16 @@ async def handle_events(device):
                         Gamepad.press(gamepad_button)
                     elif event.value == -1:
                         Gamepad.release(gamepad_button)
-                    if DEBUG_MODE: 
+                    if mapEnableDebug: 
                         print('REL_WHEEL', event.value)
                 elif event.code == evdev.ecodes.REL_HWHEEL:
-                    if DEBUG_MODE: 
+                    if mapEnableDebug: 
                         print('REL_HWHEEL', event.value)
                 elif event.code == evdev.ecodes.ABS_X and event.value != 0:
-                    if DEBUG_MODE: 
+                    if mapEnableDebug: 
                         print('ABS_X', event.value)
                 elif event.code == evdev.ecodes.ABS_Y and event.value != 0:
-                    if DEBUG_MODE: 
+                    if mapEnableDebug: 
                         print('ABS_Y', event.value)
                 else:
                     time.sleep(reaction_time)
@@ -171,7 +185,7 @@ async def handle_events(device):
                            Gamepad.yAxis(0)
                     else:
                         device.write_event(info)
-                    if DEBUG_MODE: 
+                    if mapEnableDebug: 
                         print('Gamepad centering')
 
 
@@ -201,11 +215,11 @@ def map_joystick(value, deadzone_value, input_value_min, input_value_max, output
 
 def main():
     global reaction_time
-    reaction_time = float(GAMEPAD_XY.ReactionTimeValue/1000)
+    reaction_time = float(reactionTimeValue/1000)
     """ Trigger XAC gamepad with USB or BT mouse and keyboard  """
     # Examine all input devices and find keyboards and mice.
     while len(evdev.list_devices()) == 0:
-        if DEBUG_MODE: 
+        if mapEnableDebug: 
             print("Waiting for keyboard or mice")
         time.sleep(1)
     # Process all keyboard and mouse input events.

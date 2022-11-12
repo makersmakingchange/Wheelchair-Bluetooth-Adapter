@@ -1,0 +1,69 @@
+# BUTTON MAPPING OPTIONS
+NS_BUTTON:
+  Y:                0
+  B:                1
+  A:                2
+  X:                3
+  LEFT_TRIGGER:     4
+  RIGHT_TRIGGER:    5
+  LEFT_THROTTLE:    6
+  RIGHT_THROTTLE:   7
+  MINUS:            8
+  PLUS:             9
+  LEFT_STICK:       10
+  RIGHT_STICK:      11
+  HOME:             12
+  CAPTURE:          13
+
+#EDIT DEBUG CONFIGURATION 
+
+MAP_DEBUG:          False
+
+#EDIT JOYSTICK CONFIGURATION 
+
+MAP_XY:
+  INPUT_MIN:        -16
+  INPUT_MAX:         16
+  INPUT_DEADZONE:    1
+  OUTPUT_MIN:       -127
+  OUTPUT_MAX:        127
+  OPERATION_MODE:    0  
+  REACTION_TIME:     10 
+
+#EDIT BUTTON MAPPING 
+  
+MAP_MOUSE:
+  BTN_LEFT:           A
+  BTN_RIGHT:          B
+  BTN_MIDDLE:         X
+  BTN_SIDE:           Y
+  BTN_EXTRA:          HOME
+  
+MAP_KEYBOARD:
+  KEY_A:              A
+  KEY_B:              B
+  KEY_X:              X
+  KEY_Y:              Y
+  KEY_1:              LEFT_TRIGGER
+  KEY_2:              LEFT_STICK
+  KEY_3:              LEFT_THROTTLE
+  KEY_4:              MINUS
+  KEY_5:              PLUS
+  KEY_6:              RIGHT_THROTTLE
+  KEY_7:              RIGHT_STICK
+  KEY_8:              RIGHT_TRIGGER
+  KEY_UP: 
+   X: 0
+   Y: -127
+  KEY_RIGHT: 
+   X: 127
+   Y: 0
+  KEY_DOWN: 
+   X: 0
+   Y: 127
+  KEY_LEFT: 
+   X: -127
+   Y: 0
+  
+MAP_OTHERS:
+  REL_WHEEL:           HOME

@@ -42,40 +42,6 @@ class DPad(IntEnum):
     LEFT = 6
     UP_LEFT = 7
 
-# Button names
-class NSButton(IntEnum):
-    """NSButton names based on Nintendo Switch buttons"""
-    Y = 0
-    B = 1
-    A = 2
-    X = 3
-    LEFT_TRIGGER = 4
-    RIGHT_TRIGGER = 5
-    LEFT_THROTTLE = 6
-    RIGHT_THROTTLE = 7
-    MINUS = 8
-    PLUS = 9
-    LEFT_STICK = 10
-    RIGHT_STICK = 11
-    HOME = 12
-    CAPTURE = 13
-
-class DS4Button(IntEnum):
-    """Button names based on Dual Shock 4 PS4 buttons"""
-    SQUARE = 0
-    CROSS = 1
-    CIRCLE = 2
-    TRIANGLE = 3
-    L1 = 4
-    R1 = 5
-    L2 = 6
-    R2 = 7
-    SHARE = 8
-    OPTIONS = 9
-    L3 = 10
-    R3 = 11
-    LOGO = 12
-    TPAD = 13
 
 class Gamepad_MF():
     """Gamepad_MF Linux USB Gadget Interface"""
@@ -164,70 +130,70 @@ class Gamepad_MF():
         return
 
     def leftXAxis(self, position):
-        """Move left stick X axis 0..128..255"""
+        """Move left stick X axis -127..0..127"""
         with self.thread_lock:
-            self.left_x_axis = position
+            self.left_x_axis = position + 128
             self.write()
         return
 
     def leftYAxis(self, position):
-        """Move left stick Y axis 0..128..255"""
+        """Move left stick Y axis -127..0..127"""
         with self.thread_lock:
-            self.left_y_axis = position
+            self.left_y_axis = position + 128
             self.write()
         return
 
     def rightXAxis(self, position):
-        """Move right stick X axis 0..128..255"""
+        """Move right stick X axis -127..0..127"""
         with self.thread_lock:
-            self.right_x_axis = position
+            self.right_x_axis = position + 128
             self.write()
         return
 
     def rightYAxis(self, position):
-        """Move right stick Y axis 0..128..255"""
+        """Move right stick Y axis -127..0..127"""
         with self.thread_lock:
-            self.right_y_axis = position
+            self.right_y_axis = position + 128
             self.write()
         return
 
     def map_dpad_xy(self, x, y):
         """Return direction pad number given axes x,y"""
-        if x == 128:
-            if y == 128:
+        if x == 0:
+            if y == 0:
                 return DPad.CENTERED   # Center
-            elif y < 128:
+            elif y < 0:
                 return 0    # North
             return 4        # South
-        elif x < 128:
-            if y == 128:
+        elif x < 0:
+            if y == 0:
                 return 6    # West
-            elif y < 128:
+            elif y < 0:
                 return 7    # North West
             return 5        # South West
         else:
-            if y == 128:
+            if y == 0:
                 return 2    # East
-            elif y < 128:
+            elif y < 0:
                 return 1    # North East
             return 3        # South East
 
     def dPadXAxis(self, position):
-        """Move right stick X axis 0..128..255"""
-        if (position < 0 or position > 255):
-            position = 128
+        """Move right stick X axis -127..0..127"""
+        if (position < -127 or position > 127):
+            position = 0
         with self.thread_lock:
-            self.dpad_x_axis = position
+            self.dpad_x_axis = position + 128
             self.d_pad = self.map_dpad_xy(self.dpad_x_axis, self.dpad_y_axis)
             self.write()
         return
 
     def dPadYAxis(self, position):
-        """Move right stick Y axis 0..128..255"""
-        if (position < 0 or position > 255):
-            position = 128
+        """Move right stick Y axis -127..0..127"""
+        if (position < -127 or position > 127):
+            position = 0
         with self.thread_lock:
-            self.dpad_y_axis = position
+            self.dpad_y_axis = position + 128
             self.d_pad = self.map_dpad_xy(self.dpad_x_axis, self.dpad_y_axis)
             self.write()
         return
@@ -275,16 +241,16 @@ def main():
 
         # Move the left stick then right stick
         stick = [
-            {"x": 128, "y": 128},
-            {"x": 128, "y": 0},
-            {"x": 255, "y": 0},
-            {"x": 255, "y": 128},
-            {"x": 255, "y": 255},
-            {"x": 128, "y": 255},
-            {"x":   0, "y": 255},
-            {"x":   0, "y": 128},
-            {"x":   0, "y":   0},
-            {"x": 128, "y": 128},
+            {"x": 0, "y": 0},
+            {"x": 0, "y": -127},
+            {"x": 127, "y": -127},
+            {"x": 127, "y": 0},
+            {"x": 127, "y": 127},
+            {"x": -127, "y": 127},
+            {"x": -127, "y": 127},
+            {"x": -127, "y": 0},
+            {"x": -127, "y": -127},
+            {"x": 0, "y": 0},
         ]
         for direction in range(0, 10):
             gamepad.leftXAxis(stick[direction]['x'])
