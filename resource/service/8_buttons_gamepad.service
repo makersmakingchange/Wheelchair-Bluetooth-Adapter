@@ -1,0 +1,23 @@
+[Unit]
+Description=BlueStick 8 Button gamepad automatic start with systemd, respawn, after bluetooth
+After=bluetooth.target
+After=multi-user.target
+Requires=bluetooth.target
+
+[Service]
+ExecStart=/usr/bin/python3 -u gamepad_8_buttons_inputevent.py
+WorkingDirectory=/home/player/BlueStick/resource/main
+Type=idle
+Restart=always
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=8_button_bluestick
+ExecStartPre=/bin/sleep 10
+User=root
+Group=root
+
+[Install]
+WantedBy=multi-user.target
+
+
+
