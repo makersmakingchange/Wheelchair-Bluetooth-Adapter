@@ -1,0 +1,11 @@
+[Unit]
+Description=Joystick Connection Repair Service
+After=multi-user.target
+
+[Service]
+Type=idle
+ExecStart=/bin/bash connection_repair.sh
+WorkingDirectory=/usr/local/etc/BlueStick/resource/main
+
+[Install]
+WantedBy=multi-user.target

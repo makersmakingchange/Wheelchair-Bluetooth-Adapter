@@ -140,8 +140,18 @@ else
 	cd ..
 fi
 
-#Step 8: Rebooting RaspberryPi
-echo "Step 8: Rebooting RaspberryPi."
+#Step 8: Add auto connect repair service
+cd service
+sudo chmod +x connection_repair.service
+sudo cp connection_repair.service /etc/systemd/system/
+systemctl daemon-reload
+systemctl enable connection_repair.service
+systemctl start connection_repair.service
+echo "Step 8: Successfully added auto connect repair service."
+cd ..
+
+#Step 9: Rebooting RaspberryPi
+echo "Step 9: Rebooting RaspberryPi."
 echo "BlueStick software successfully installed..."
 sleep 3
 sudo reboot
