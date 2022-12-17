@@ -42,25 +42,21 @@ else
 fi
 echo "Instaling $GADGET_NAME ..."
 
-#Step 1: Get current kernel version 
-KERNEL_VERSION=$(uname -r | egrep -o '^[^-+]+')
-echo "Step 1: Kernel version is currently set to ${KERNEL_VERSION}"
-
-
-#Step 2: Install and update dependencies
+#Step 1: Install and update dependencies
 sudo apt update
 sudo apt install -y python3-pip python3-gpiozero python3-evdev git
+sudo pip install evdev -U
 sudo python3 -m pip install pyyaml
-echo "Step 2: Dependencies successfully installed"
+echo "Step 1: Dependencies successfully installed"
 
 
-#Step 3: Clone code from github
+#Step 2: Clone code from github
 cd /usr/local/etc
 [ ! -d ${REPO_NAME} ] && git clone https://github.com/milador/BlueStick
 cd ${REPO_NAME}/resource
-echo "Step 3: Repository was cloned"
+echo "Step 2: Repository was cloned"
 
-#Step 4: Load the USB gadget drivers
+#Step 3: Load the USB gadget drivers
 grep --quiet "^dtoverlay=dwc2$" /boot/config.txt
 if [ $? -eq 1 ]; then
     echo "dtoverlay=dwc2" | sudo tee -a /boot/config.txt
@@ -75,25 +71,25 @@ if [ $? -eq 1 ]
 then
     echo "libcomposite" | sudo tee -a /etc/modules
 fi
-echo "Step 4: Successfully loaded the USB gadget drivers."
+echo "Step 3: Successfully loaded the USB gadget drivers."
 
-#Step 5: Install USB gamepad gadget and load it on boot
+#Step 4: Install USB gamepad gadget and load it on boot
 cd gadget
 sudo cp ${USB_GADGET_NAME} /usr/bin/
 sudo chmod +x /usr/bin/${USB_GADGET_NAME}
 # Insert line in /etc/rc.local, if needed
 sudo sed -i '/\/usr\/bin\//d' /etc/rc.local
 sudo sed -i '/^exit 0/i \/usr/bin/'${USB_GADGET_NAME} /etc/rc.local
-echo "Step 5: Successfully installed USB gamepad gadget descriptor."
+echo "Step 4: Successfully installed USB gamepad gadget descriptor."
 cd ..
 
-#Step 6: Install bluestick_device rule to give permission and allow hidg0 access
-cd rules
-sudo cp ${RULE_NAME} /etc/udev/rules.d/
-echo "Step 6: Successfully added bluestick_device rule."
-cd ..
+#Step 5: Install bluestick_device rule to give permission and allow hidg0 access
+#cd rules
+#sudo cp ${RULE_NAME} /etc/udev/rules.d/
+#echo "Step 5: Successfully added bluestick_device rule."
+#cd ..
 
-#Step 7: Install gamepad service and start it
+#Step 5: Install gamepad service and start it
 IS_ACTIVE=$(sudo systemctl is-active $SERVICE_NAME)
 if [ $GADGET_NAME = "8_Buttons_Gamepad" ]; then
     sudo systemctl stop '16_buttons_gamepad.service' '32_buttons_gamepad.service' 'ns_gamepad.service' 'ps_gamepad.service' 'xac_gamepad.service'
@@ -124,7 +120,7 @@ if [ "$IS_ACTIVE" = "active" ]; then
     echo "Service is running"
     echo "Restarting service"
     sudo systemctl restart $SERVICE_NAME
-    echo "Step 7: Service successfully restarted"
+    echo "Step 5: Service successfully restarted"
 else
     # create service file
     echo "Creating service file"
@@ -136,22 +132,22 @@ else
     sudo systemctl daemon-reload 
     sudo systemctl enable ${SERVICE_NAME} # remove the extension
     sudo systemctl start ${SERVICE_NAME}
-    echo "Step 7: Service successfully started"
+    echo "Step 5: Service successfully started"
 	cd ..
 fi
 
-#Step 8: Add auto connect repair service
+#Step 6: Add auto connect repair service
 cd service
 sudo chmod +x connection_repair.service
 sudo cp connection_repair.service /etc/systemd/system/
 systemctl daemon-reload
 systemctl enable connection_repair.service
 systemctl start connection_repair.service
-echo "Step 8: Successfully added auto connect repair service."
+echo "Step 6: Successfully added auto connect repair service."
 cd ..
 
-#Step 9: Rebooting RaspberryPi
-echo "Step 9: Rebooting RaspberryPi."
+#Step 7: Rebooting RaspberryPi
+echo "Step 7: Rebooting RaspberryPi."
 echo "BlueStick software successfully installed..."
 sleep 3
 sudo reboot

@@ -1,5 +1,5 @@
 [Unit]
-Description=Joystick Connection Repair Service
+Description=BlueStick Auto Connection Repair Service
 After=multi-user.target
 
 [Service]
