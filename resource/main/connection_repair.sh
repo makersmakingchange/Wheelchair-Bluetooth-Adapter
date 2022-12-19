@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 bluetoothctl paired-devices | cut -f2 -d' '|
 while read -r uuid

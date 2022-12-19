@@ -20,16 +20,16 @@ sudo rm -r /etc/udev/rules.d/bluestick_device.rules
 echo "Step 3: Successfully removed bluestick_device rule."
 
 #Step 4: Install gamepad service and start it
-sudo systemctl stop '8_buttons_gamepad.service' '16_buttons_gamepad.service' '32_buttons_gamepad.service' 'ns_gamepad.service' 'ps_gamepad.service' 'xac_gamepad.service'
-sudo systemctl disable '8_buttons_gamepad.service' '16_buttons_gamepad.service' '32_buttons_gamepad.service' 'ns_gamepad.service' 'ps_gamepad.service' 'xac_gamepad.service'
+sudo systemctl stop 'connection_repair.service' '8_buttons_gamepad.service' '16_buttons_gamepad.service' '32_buttons_gamepad.service' 'ns_gamepad.service' 'ps_gamepad.service' 'xac_gamepad.service'
+sudo systemctl disable 'connection_repair.service' '8_buttons_gamepad.service' '16_buttons_gamepad.service' '32_buttons_gamepad.service' 'ns_gamepad.service' 'ps_gamepad.service' 'xac_gamepad.service'
 cd /etc/systemd/system/
-sudo rm -r 8_buttons_gamepad.service 16_buttons_gamepad.service 32_buttons_gamepad.service ns_gamepad.service ps_gamepad.service xac_gamepad.service
+sudo rm -r connection_repair.service 8_buttons_gamepad.service 16_buttons_gamepad.service 32_buttons_gamepad.service ns_gamepad.service ps_gamepad.service xac_gamepad.service
 sudo systemctl daemon-reload 
 sudo systemctl reset-failed
 echo "Step 4: Service successfully removed"
 
-#Step 8: Rebooting RaspberryPi
-echo "Step 8: Rebooting RaspberryPi."
+#Step 5: Rebooting RaspberryPi
+echo "Step 5: Rebooting RaspberryPi."
 echo "BlueStick software successfully uninstalled..."
 sleep 3
 sudo reboot
