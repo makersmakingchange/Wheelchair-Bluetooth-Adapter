@@ -1,14 +1,12 @@
-# BlueStick
+# Wheelchair-Bluetooth-Adapter
 
-BlueStick project is a gaming input solution based on Raspberry Pi hardware which allows input devices such as HID keyboard and HID mice devices to act as HID gamepad.
-
-The main code is based on [RaspberryPi-Joystick](https://github.com/milador/RaspberryPi-Joystick) project with enhanced features to improve the user experience.
+Wheelchair-Bluetooth-Adapter project is a gaming input solution based on Raspberry Pi hardware which allows input devices such as HID keyboard and HID mice devices to act as HID gamepad.
 
 ## License
 
 ### MIT License
 
-Copyright (c) 2022 Milador
+Copyright (c) 2023 MakersMakingChange
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
