@@ -1,0 +1,6 @@
+Version 0.1 | 2024-May-06
+ - Initial version and documentation for Raspberry Pi Zero W Version
+
+
+
+
