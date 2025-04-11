@@ -1,16 +1,10 @@
-<!--- Open Source Assistive Technology: GitHub Readme Template Version 1.1 (2024-Mar-15) 
- Template files available at https://github.com/makersmakingchange/OpenAT-Template --->
+<!-- Open Source Assistive Technology: GitHub Readme Template Version 1.1 (2024-Mar-15) -->
+<!-- Template files available at https://github.com/makersmakingchange/OpenAT-Template -->
 
-<!--- 
-TITLE
-Should match the name of the GitHub repository. Choose something descriptive rather than whimsical. 
- --->
+<!-- TITLE -->
 # Wheelchair Bluetooth Joystick Adapter
 
-<!--- 
-SUMMARY
-A brief summary of the project. What it does, who it is for, how much it costs.
- --->
+<!-- SUMMARY -->
 The Wheelchair Bluetooth Joystick Adapter is a gaming input solution that enables a user of a powerchair to use their wheelchair joystick that outputs an HID mouse to act as an HID gamepad. The solution requires a powerchair that has a Bluetooth Module that is able to emulate a Bluetooth Mouse. The Wheelchair Bluetooth Joystick Adapter connects to the Bluetooth Module and converts the mouse commands into joystick movement, and then connect via USB to a gaming system.
 
 The Wheelchair Bluetooth Joystick Adapter is based on a [Raspberry Pi](https://www.raspberrypi.com/), a small, affordable single-board computer. The Raspberry Pi is programmed with special code to be able to connect with the Bluetooth module, convert the mouse commands into joystick values, and output the result via USB.
@@ -138,10 +132,7 @@ As open source assistive technology, you are welcomed and encouraged to improve 
 | Changelog            | 0.1     | [Changelog](CHANGES.txt)     |
 --->
 
-<!---
-DESIGN FILES
-Include a copy of the original design files to facilitate easy editing and customization. Consider also including a generic format (e.g., STEP)
---->
+<!-- DESIGN FILES -->
 ### Design Files
 This device does not require any custom hardware, printed circuit boards, or 3D prints.
 <!---
@@ -149,30 +140,21 @@ This device does not require any custom hardware, printed circuit boards, or 3D 
  - [PCB Files](/Design_Files/PCB_Design_Files)
  --->
 
-<!---
-BUILD FILES
-Include a copy of the build files intended for manufacturing. This may include svg files for laser cutting, stl files for 3d printing, Gerber files for custom PCBs, and Arduino files for custom firmware
---->
+<!-- BUILD FILES -->
 ### Build Files
 <!--- - [3D Printing Files](/Build_Files/3D_Printing_Files) --->
 <!--- - [PCB Build Files](/Build_Files/PCB_Build_Files) --->
 <!--- - [Firmware Files](/Build_Files/Firmware_Files) --->
  - [Software Files](/Build_Files/Software_Files)
 
-<!---
-ATTRIBUTION
-Provide any necessary attribution for designs or components that are included in the device or as part of the project.
---->
+<!-- ATTRIBUTION -->
 ## Attribution
 
 The bulk of this solution was developed by Milad Ha as part of his [BlueStick](https://github.com/milador/BlueStick) project, a gaming input solution based on Raspberry Pi hardware which allows input devices such as HID keyboard and HID mice devices to act as HID gamepad. This code is released under an MIT license. 
 
 The documentation template was created by Makers Making Change / Neil Squire Society and is used under a CC BY-SA 4.0 license. It is available at the following link: [https://github.com/makersmakingchange/OpenAT-Template](https://github.com/makersmakingchange/OpenAT-Template)
 
-<!---
-CONTRIBUTORS
-List the names of the people that contributed to the design. This could include the original source of the idea, designers, testers, documenters, etc.
---->
+<!-- CONTRIBUTORS -->
 ### Contributors
 
  - Milad Ha, Neil Squire Society. Software development and testing.
@@ -183,10 +165,7 @@ List the names of the people that contributed to the design. This could include 
  - Riley Fitzpatrick, Univerity of PEI. Latency Testing.
 
 
-<!---
-LICENSE
-Add the year(s) for the copyright and the Designer Name. You may use the standard set of open licenses or choose your own for the hardware, software, and accompanying materials.
---->
+<!-- LICENSE -->
 ## License
 
 Copyright (c) 2023-2024 Neil Squire Society
@@ -206,6 +185,7 @@ Source Location: <https://github.com/makersmakingchange/Wheelchair-Bluetooth-Ada
 
 ---
 
+<!-- ABOUT MMC START -->
 ## About Makers Making Change
 [<img src="https://raw.githubusercontent.com/makersmakingchange/makersmakingchange/main/img/mmc_logo.svg" width="500" alt="Makers Making Change Logo">](https://www.makersmakingchange.com/)
 
@@ -224,3 +204,4 @@ Makers Making Change leverages the capacity of community based Makers, Disabilit
 
 ### Contact Us
 For technical questions, to get involved, or to share your experience we encourage you to [visit our website](https://www.makersmakingchange.com/) or [contact us](https://www.makersmakingchange.com/s/contact).
+<!-- ABOUT MMC END -->
